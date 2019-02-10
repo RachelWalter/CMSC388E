@@ -6,7 +6,8 @@ float direction; // determines where the artist is moving first
 int count = 0; // determines how the artist is getting there (left, right, down, or up)
 
 void setup(){
-  /* This section will initialize variables that will help me mimic the artist walking across the canvas. */
+  /* This section will initialize variables that will help me mimic the artist walking 
+  /* across the canvas. */
   x = random(0, 700); // initialize the starting x coordinate of the footprint
   y = random(0, 700); // initialize the starting y coordinate of the footprint
   
@@ -17,8 +18,8 @@ void setup(){
   /* This section sets up the screen to my liking
   * This includes the color of the background, the size, and the stroke  color*/
   fullScreen();
-  background(250, 242, 217);
-  stroke(0);
+  background(250, 242, 217);// this creates a nice cream canvas color
+  stroke(0); //both of these are black to follow the form of the original piece
   fill(0);
   
   /* This line was mainly used for me to watch the progress at different speeds */
@@ -26,7 +27,8 @@ void setup(){
 }
 
 void draw(){
-  /* The artist chooses a direction to walk and moves in that direction, searching for her purpose and inspiration */
+  /* The artist chooses a direction to walk and moves in that direction, searching 
+  /* for her purpose and inspiration */
   /* An even count means pointing up or down. An odd count means pointing left or right */
   if(direction >= 0 && direction < 1){
       // This direction means that the print will go up and to the right
@@ -69,11 +71,13 @@ void draw(){
   /* Update the counter for the next iteration */
   count+= 1;
   
-  /* These values are saved so that if the random generation takes us off the canvas, we can choose a new value and direction correctly */
+  /* These values are saved so that if the random generation takes us off the canvas, 
+  / * we can choose a new value and direction correctly. It will make the steps cohesive */
   float saveX = x;
   float saveY = y;
   
-  /* This selects the next region to walk to. It repeats so the artist doesn't walk off the canvas into the abyss */
+  /* This selects the next region to walk to. 
+  /* It repeats so the artist doesn't walk off the canvas into the abyss */
   do{
     x = saveX;
     y = saveY;
@@ -100,6 +104,8 @@ void draw(){
 }
 
 /* The feet drawn facing so it looks like it is going towards the top of the screen */
+/* These were a little finnicky to work with, but it was easiest to choose one 
+/* central point and create the representation of the foot around that. */
 void drawFeetUp(){
   /* Drawing the right footprint */
   ellipse(x,y,10,10); // ball of the foot
