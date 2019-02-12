@@ -8,10 +8,10 @@ int count = 0; // determines how the artist is getting there (left, right, down,
 void setup(){
   /* This section will initialize variables that will help me mimic the artist walking 
   /* across the canvas. */
-  x = random(0, 700); // initialize the starting x coordinate of the footprint
-  y = random(0, 700); // initialize the starting y coordinate of the footprint
+  x = random(0, width); // initialize the starting x coordinate of the footprint
+  y = random(0, height); // initialize the starting y coordinate of the footprint
   
-  opacity = 200; // sets the opacity high to start out, the feet have fresh paint on them
+  opacity = 200; // sets the opacity high to start out; the feet have fresh paint on them
   
   direction = 0; // As the figure moves, the foot prints will change direction to depict the act of walking
   
@@ -77,7 +77,8 @@ void draw(){
   float saveY = y;
   
   /* This selects the next region to walk to. 
-  /* It repeats so the artist doesn't walk off the canvas into the abyss */
+  /* It repeats in the case the artist walks off the canvas 
+  /* so they do not disappear into the abyss */
   do{
     x = saveX;
     y = saveY;
@@ -85,20 +86,20 @@ void draw(){
     
     if(direction >= 0 && direction < 1){
       // This direction means that the print will go up and to the right
-      x+= random(40,60);
-      y-= random(40,60);
+      x+= random(40,60); // right movement
+      y-= random(40,60); // up movement
     }else if(direction >= 1 && direction < 2){
       // This direction means that the print will go up and to the left
-       x-= random(40,60);
-       y-= random(40,60);
+       x-= random(40,60); // left movement
+       y-= random(40,60); // up movement
     }else if(direction >= 2 && direction < 3){
       // This direction means that the print will go down and to the left
-       x-= random(40,60);
-       y+= random(40,60);
+       x-= random(40,60); // left movement
+       y+= random(40,60); // down movement
     }else{
       // This direction means that the print will go down and to the right
-       x+= random(40,60);
-       y+= random(40,60);
+       x+= random(40,60); // right movement
+       y+= random(40,60); // down movement
     }  
   }while(x > width || y > height || x < 0 || y < 0);
 }
@@ -115,7 +116,7 @@ void drawFeetUp(){
   ellipse(x+4,y-7,2,2); // third toe
   
   /* Drawing the left footprint */
-  float leftx = x-30; //offset so it looks like the foot prints are walking
+  float leftx = x-30; //offset so it looks like the foot prints are walking (one stride is in front of another)
   float lefty = y-30;
   ellipse(leftx,lefty,10,10); // ball of the foot
   ellipse(leftx-3, lefty+15, 5, 20); // arch and back of foot
@@ -134,7 +135,7 @@ void drawFeetDown(){
   ellipse(x-4,y+7,2,2); // third toe
   
   /* Drawing the left footprint */
-  float leftx = x+30; //offset so it looks like the foot prints are walking
+  float leftx = x+30; //offset so it looks like the foot prints are walking (one stride is in front of another)
   float lefty = y+30;
   ellipse(leftx,lefty,10,10); // ball of the foot
   ellipse(leftx+3, lefty-15, 5, 20); // arch and back of foot
@@ -154,7 +155,7 @@ void drawFeetLeft(){
   
   
   /* Drawing the left footprint */
-  float leftx = x-30; //offset so it looks like the foot prints are walking
+  float leftx = x-30; //offset so it looks like the foot prints are walking (one stride is in front of another)
   float lefty = y+30;
   ellipse(leftx,lefty,10,10); // ball of the foot
   ellipse(leftx+15, lefty+3, 20, 5); // arch and back of foot
@@ -165,7 +166,7 @@ void drawFeetLeft(){
 
 /* The feet drawn facing so it looks like it is going towards the right of the screen */
 void drawFeetRight(){
-    /* Drawing the left footprint */
+  /* Drawing the left footprint */
   ellipse(x,y,10,10); // ball of the foot
   ellipse(x-15, y-3, 20, 5); // arch and back of foot
   ellipse(x+7,y-5,3,3); // big toe
@@ -174,7 +175,7 @@ void drawFeetRight(){
   
   
   /* Drawing the right footprint */
-  float leftx = x-30; //offset so it looks like the foot prints are walking
+  float leftx = x-30; //offset so it looks like the foot prints are walking (one stride is in front of another)
   float lefty = y+30;
   ellipse(leftx,lefty,10,10); // ball of the foot
   ellipse(leftx-15, lefty+3, 20, 5); // arch and back of foot
