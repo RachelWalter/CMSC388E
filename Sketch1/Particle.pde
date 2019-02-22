@@ -1,5 +1,8 @@
-class Particle
-{
+/* Much of this code was inspired from these resources:
+  * Processing Website (Dan Shiffman): https://processing.org/examples/simpleparticlesystem.html
+  * OpenProcessing Project "Glow Worms" by Matthew Carney: https://www.openprocessing.org/sketch/632381 */
+  
+class Particle{
   final static float BOUNCE = -0.5;
   final static float MAX_SPEED = 0.05; // used to be 0.1
   
@@ -8,10 +11,6 @@ class Particle
   int randomNum = (int)(random(0,ColorPalette.NUM_COLORS));
   color myFill = p.getColorAtIndex(randomNum);
   color myOutline = p.getOutlineAtIndex(randomNum);
-  
-  /* Much of this code was inspired from these resources:
-  * Processing Website (Dan Shiffman): https://processing.org/examples/simpleparticlesystem.html
-  * OpenProcessing Project "Glow Worms" by Matthew Carney: https://www.openprocessing.org/sketch/632381 */
   
   // These variables control the velocity and acceleration
   PVector vel = new PVector(random(-MAX_SPEED, MAX_SPEED), random(-MAX_SPEED, MAX_SPEED));
