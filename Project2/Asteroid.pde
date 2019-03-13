@@ -1,28 +1,28 @@
 public class Asteroid{
-  final int RING1 = 40; // romantic partners, family, and close friends
-  final int RING2 = 80; // friends
-  final int RING3 = 120; // classmates and coworkers
-  final int RING4 = 160; // family friends and acquantinces
-  final int RING5 = 200; // dislike
+  final int RING1 = 80; // romantic partners, family, and close friends
+  final int RING2 = 130; // friends
+  final int RING3 = 180; // classmates and coworkers
+  final int RING4 = 230; // family friends and acquantinces
+  final int RING5 = 280; // dislike
   
   /* RING1 */
-  color famColor = color(255, 154, 134); //red-orange
-  color cfColor = color(183, 54, 95); // red-purple
-  color romanColor = color(255, 126, 137); //red
-  
+  color famColor = color(124, 168, 255); //blue
+  color cfColor = color(124, 142, 255); // indigo
+  color romanColor = color(203, 126, 255); //purple
+
   /* RING2 */
-  color fColor = color(149, 129, 89); // brown 1
-  
+  color fColor = color(124, 228, 255); //light blue
+
   /* RING3 */
-  color clColor =  color(255, 248, 28); // yellow
-  color coColor =  color(255, 218, 28); //gold
-  
+  color clColor =  color(126, 255, 232); //tealish
+  color coColor =  color(141, 255, 126); //green 
+
   /* RING4 */
-  color ffColor = color(255,170,0); //orange
-  color acqColor = color(255, 200, 0); // orange-yellow
-  
+  color ffColor = color(255,205,124); //orange
+  color acqColor = color(255, 249, 124); // yellow
+
   /* RING5 */
-  color dColor = color(137, 93, 4); // brown 2
+  color dColor = color(255, 126, 137); // red
   
   PImage images[] = {a1, a2, a3, a4, a5, a6};
   
@@ -31,14 +31,18 @@ public class Asteroid{
   float radius;
   float angle;
   float orbitspeed;
+  boolean inOrbit;
+  float initRadius;
  
   /* CONSTRUCTOR */
   Asteroid(State s){
     angle = random(0,TWO_PI);
-    orbitspeed = random(0.05, 0.15);
+    orbitspeed = random(0.02, 0.08);
     int rand = (int)(random(0,6));
     img = images[rand].copy();
     img.resize(20,20); 
+    
+    inOrbit = false;
     
     state = s;
     if(state == State.FAMILY){
@@ -76,6 +80,8 @@ public class Asteroid{
     if(state == State.DISLIKE){
       radius = RING5 + random(-10,10);
     }
+    
+    initRadius = (width/2);
   
   }
   
@@ -118,16 +124,31 @@ public class Asteroid{
       tint(dColor);
     }
     
-    pushMatrix();
-    rotate(angle);
-    translate(radius + (earth.width/50), (earth.height/50));
-    image(img, 0, 0);
-    popMatrix();
-    
-    noTint();
-    
-    // update angle
-    angle = (angle + orbitspeed) % TWO_PI;
+    if(inOrbit){
+      pushMatrix();
+      rotate(angle);
+      translate(radius, 0);
+      image(img, 0, 0);
+      popMatrix();
+      
+      noTint();
+      
+      // update angle
+      angle = (angle + orbitspeed) % TWO_PI;
+    }else{
+      pushMatrix();
+      rotate(angle);
+      translate(initRadius, 0);
+      image(img, 0, 0);
+      popMatrix();
+      
+      noTint();
+      
+      initRadius -= orbitspeed*100;
+      if(initRadius <= radius){
+        inOrbit = true;
+      }
+    }
     
   }
   

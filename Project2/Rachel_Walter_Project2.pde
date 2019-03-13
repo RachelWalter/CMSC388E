@@ -22,12 +22,14 @@ void setup() {
   a6 = loadImage("asteroid1.png");
   
   //image from https://www.vocfm.co.za/mysterious-repeating-radio-bursts-baffle-physicists/
-  bg = loadImage("background.jpg"); 
-  size(1240, 775);
+  bg = loadImage("background2.jpg"); 
+  //size(1240, 775); bg 1
+  size(1366,768);
   background(bg);
   
   // image from 
   earth = loadImage("planet.png");
+  earth.resize(100,100); 
   
   table = loadTable("fb_data.csv", "header");
 
@@ -47,8 +49,9 @@ void draw(){
   background(bg);
   
   pushMatrix();
-  translate(width/2, height/2);
-  image(earth, 0, 0, earth.width/25, earth.height/25); 
+  translate((width/2)-50, (height/2)-50);
+  image(earth, 0, 0); //, earth.width/25, earth.height/25
+  translate(50, 50);
   as.update();
   popMatrix();
 }

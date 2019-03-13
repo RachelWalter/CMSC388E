@@ -31,6 +31,7 @@ public class AsteroidSystem{
   /* GETS DATA FROM THE CSV AND STORES IT IN ARRAYS */
   public void processRow(TableRow row){
     month.add(row.getString("Date"));
+    println(row.getString("Date"));
     
     int count = 0;
     int i = 0;
