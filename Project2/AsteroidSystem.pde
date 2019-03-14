@@ -1,5 +1,4 @@
 public class AsteroidSystem{
-  ArrayList<String> month;
   int total;
   ArrayList<Asteroid> family;
   ArrayList<Asteroid> friends;
@@ -10,13 +9,15 @@ public class AsteroidSystem{
   ArrayList<Asteroid> coworkers;
   ArrayList<Asteroid> ff;
   ArrayList<Asteroid> dislike;
+  ArrayList<Asteroid> leaving;
+  ArrayList<Asteroid> dead;
   
   
   /* CONSTRUCTOR */
   AsteroidSystem(){
     total = 0;
     
-    month = new ArrayList();
+    /* Initializing all our ArrayLists for maintaining data */
     family = new ArrayList();
     friends = new ArrayList();
     acqs = new ArrayList();
@@ -26,22 +27,36 @@ public class AsteroidSystem{
     coworkers = new ArrayList();
     ff = new ArrayList();
     dislike = new ArrayList();
+    leaving = new ArrayList();
+    dead = new ArrayList();
   }
 
   /* GETS DATA FROM THE CSV AND STORES IT IN ARRAYS */
   public void processRow(TableRow row){
-    month.add(row.getString("Date"));
+    // Print date to console for debugging purposes
     println(row.getString("Date"));
     
+    // variables to process the number of 
+    // asteroids (people) per category
     int count = 0;
     int i = 0;
     
+    // Add to the total number, just in case we need it
     total += row.getInt("Total");
     
+    /* FOR EACH COLUMN IN THE CSV:
+    *  1. We get the number of asteroids to add/remove
+    *  2. If we are losing asteroids, we put them in the leave queue
+    *  3. If we are adding asteroids, we are making a new asteroid and 
+    *     adding to the right queue */
     count = row.getInt("Family");
     if(count < 0){
+      count*=-1;
       for(i = 0; i < count; i++){
-        family.remove(0);
+        Asteroid a = family.remove(0);
+        leaving.add(a);
+        a.leaving = true; 
+        a.inOrbit = false;
       }
     }else{
       for(i = 0; i < count; i++){
@@ -51,8 +66,12 @@ public class AsteroidSystem{
     
     count = row.getInt("Friends");
     if(count < 0){
+      count*=-1;
       for(i = 0; i < count; i++){
-        friends.remove(0);
+        Asteroid a = friends.remove(0);
+        leaving.add(a);
+        a.leaving = true; 
+        a.inOrbit = false;
       }
     }else{
       for(i = 0; i < count; i++){
@@ -62,8 +81,12 @@ public class AsteroidSystem{
     
     count = row.getInt("Acquaintances");
     if(count < 0){
+      count*=-1;
       for(i = 0; i < count; i++){
-        acqs.remove(0);
+        Asteroid a = acqs.remove(0);
+        leaving.add(a);
+        a.leaving = true; 
+        a.inOrbit = false;
       }
     }else{
       for(i = 0; i < count; i++){
@@ -73,8 +96,12 @@ public class AsteroidSystem{
     
     count = row.getInt("Classmates");
     if(count < 0){
+      count*=-1;
       for(i = 0; i < count; i++){
-        classmates.remove(0);
+        Asteroid a = classmates.remove(0);
+        leaving.add(a);
+        a.leaving = true; 
+        a.inOrbit = false;
       }
     }else{
       for(i = 0; i < count; i++){
@@ -84,8 +111,12 @@ public class AsteroidSystem{
     
     count = row.getInt("Close");
     if(count < 0){
+      count*=-1;
       for(i = 0; i < count; i++){
-        close.remove(0);
+        Asteroid a = close.remove(0);
+        leaving.add(a);
+        a.leaving = true; 
+        a.inOrbit = false;
       }
     }else{
       for(i = 0; i < count; i++){
@@ -95,8 +126,12 @@ public class AsteroidSystem{
     
     count = row.getInt("Romantic Partners");
     if(count < 0){
+      count*=-1;
       for(i = 0; i < count; i++){
-        rp.remove(0);
+        Asteroid a = rp.remove(0);
+        leaving.add(a);
+        a.leaving = true; 
+        a.inOrbit = false;
       }
     }else{
       for(i = 0; i < count; i++){
@@ -106,19 +141,27 @@ public class AsteroidSystem{
     
     count = row.getInt("Coworkers");
     if(count < 0){
+      count*=-1;
       for(i = 0; i < count; i++){
-        family.remove(0);
+        Asteroid a = coworkers.remove(0);
+        leaving.add(a);
+        a.leaving = true;
+        a.inOrbit = false;
       }
     }else{
       for(i = 0; i < count; i++){
-        acqs.add(new Asteroid(State.COWORKER));
+        coworkers.add(new Asteroid(State.COWORKER));
       }
     }
     
     count = row.getInt("FamilyFriends");
     if(count < 0){
+      count*=-1;
       for(i = 0; i < count; i++){
-        ff.remove(0);
+        Asteroid a = ff.remove(0);
+        leaving.add(a);
+        a.leaving = true; 
+        a.inOrbit = false;
       }
     }else{
       for(i = 0; i < count; i++){
@@ -128,8 +171,12 @@ public class AsteroidSystem{
     
     count = row.getInt("Dislike");
     if(count < 0){
+      count*=-1;
       for(i = 0; i < count; i++){
-        dislike.remove(0);
+        Asteroid a = dislike.remove(0);
+        leaving.add(a);
+        a.leaving = true; 
+        a.inOrbit = false;
       }
     }else{
       for(i = 0; i < count; i++){
@@ -139,6 +186,10 @@ public class AsteroidSystem{
   }
   
   public void update(){
+    /* FOR EACH LIST:
+    *  1. Go through each asteroid in the list
+    *  2. Update the location on the screen */
+    
     for(Asteroid a: family){
       a.show();
     }
@@ -174,6 +225,22 @@ public class AsteroidSystem{
     for(Asteroid a: dislike){
       a.show();
     }
+    
+    // if the asteroid was added to the leaving list, 
+    // then we keep updating it until it's dead (off screen)
+    for(Asteroid a: leaving){
+      a.show();
+      if(a.dead){
+        dead.add(a);
+      }
+    }
+    
+    // Didn't want to get an exception by removing and looping at the same time
+    // so the dead queue removes them from the leave queue and clears itself out at the end
+    for(Asteroid a: dead){
+      leaving.remove(a);
+    }
+    dead = new ArrayList();
   }
   
 }
