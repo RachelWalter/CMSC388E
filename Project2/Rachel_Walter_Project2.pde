@@ -54,11 +54,15 @@ void draw(){
   // load the background (stops us from having ghost asteroids?)
   background(bg);
   
+  // sets the text size and prints the year and month of the data
+  textSize(32);
+  text(date, 10, 30); 
+  
   // translate the matrix so that 0,0 is at the center of the Earth
   pushMatrix();
   translate((width/2)-50, (height/2)-50);
   image(earth, 0, 0); // show the Earth!
   translate(50, 50);  // update origin again for the asteroids
   as.update(); // update all the asteroids!
-  popMatrix();
+  popMatrix(); // reset so we can start over
 }

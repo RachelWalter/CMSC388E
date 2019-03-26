@@ -1,5 +1,10 @@
+String date; // the current time period of data
+
 public class AsteroidSystem{
-  int total;
+  int total; // the total number of asteroids - just for record keeping purposes
+
+  /* Each arraylist tracks the friends in each category *
+   * makes managing all the people much easier!! */
   ArrayList<Asteroid> family;
   ArrayList<Asteroid> friends;
   ArrayList<Asteroid> acqs;
@@ -15,7 +20,9 @@ public class AsteroidSystem{
   
   /* CONSTRUCTOR */
   AsteroidSystem(){
+    // initial the total and date
     total = 0;
+    date = "";
     
     /* Initializing all our ArrayLists for maintaining data */
     family = new ArrayList();
@@ -33,11 +40,13 @@ public class AsteroidSystem{
 
   /* GETS DATA FROM THE CSV AND STORES IT IN ARRAYS */
   public void processRow(TableRow row){
-    // Print date to console for debugging purposes
-    println(row.getString("Date"));
+    /* Sets the current date so it can be printed on the screen-  
+     * this will help the viewer see the changes over time */
+    date = row.getString("Date");
+    println(date);
     
-    // variables to process the number of 
-    // asteroids (people) per category
+    /* variables to process the number of 
+    / asteroids (people) per category */
     int count = 0;
     int i = 0;
     
@@ -183,6 +192,8 @@ public class AsteroidSystem{
         dislike.add(new Asteroid(State.DISLIKE));
       }
     }
+    
+    /* END SETTING UP DATA USING CSV FILE */
   }
   
   public void update(){
@@ -226,8 +237,10 @@ public class AsteroidSystem{
       a.show();
     }
     
-    // if the asteroid was added to the leaving list, 
-    // then we keep updating it until it's dead (off screen)
+    /* END SHOWING THE "ALIVE" ASTEROIDS */
+    
+    /* if the asteroid was added to the leaving list, 
+     * then we keep updating it until it's dead (off screen) */
     for(Asteroid a: leaving){
       a.show();
       if(a.dead){
@@ -235,8 +248,9 @@ public class AsteroidSystem{
       }
     }
     
-    // Didn't want to get an exception by removing and looping at the same time
-    // so the dead queue removes them from the leave queue and clears itself out at the end
+    /* Didn't want to get an exception by removing and looping at the same time
+     * so the dead queue removes them from the leave queue and clears itself out 
+     * at the end */
     for(Asteroid a: dead){
       leaving.remove(a);
     }

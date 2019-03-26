@@ -42,16 +42,16 @@ public class Asteroid{
   boolean dead;
   boolean leaving;
   
-  // Helps track the position before entering orbit/while leaving it
+  /* Helps track the position before entering orbit/while leaving it */
   float initRadius;
  
   /* CONSTRUCTOR */
   Asteroid(State s){
-    // setting inital angle and speed
+    // setting inital angle and speed to random values
     angle = random(0,TWO_PI); 
     orbitspeed = random(0.02, 0.08);
     
-    // selecting an asteroid image and resizing it
+    // selecting a random asteroid image and resizing it
     int rand = (int)(random(0,8));
     img = images[rand].copy();
     img.resize(20,20); 
@@ -61,8 +61,9 @@ public class Asteroid{
     dead = false;
     leaving = false;
     
-    // the state determines the relationship,
-    // so we use it to choose the radius to orbit in
+    /* the state determines the closness of the relationship,
+     * so we use it to choose the radius to orbit in 
+     * and it can be +/- 15 to add some variation */
     state = s;
     if(state == State.FAMILY){
       radius = RING1 + random(-15,15);
@@ -99,6 +100,7 @@ public class Asteroid{
     if(state == State.DISLIKE){
       radius = RING5 + random(-15,15);
     }
+    /* END SETTING THE RADIUS */
     
     // we start off the screen, which would be width/2 with how we translated the image
     initRadius = (width/2);
@@ -107,7 +109,8 @@ public class Asteroid{
   
   /* DISPLAY */
   void show(){
-    // use the relationship to determine the right color to tint the asteroid 
+    /* Use the relationship to determine the right color to tint the asteroid 
+     * as the colors are defined at the top of this class */
     State s = state; 
     if(s == State.FAMILY){
       tint(famColor);
@@ -144,21 +147,23 @@ public class Asteroid{
     if(s == State.DISLIKE){
       tint(dColor);
     }
+    /* END SETTING THE COLOR */
     
     /* IN ORBIT --> rotate around the earth at the set speed */
     if(inOrbit){
-      // these tranformations make the asteroids rotate 
-      // with respect to the planet
+      /* these tranformations make the asteroids rotate 
+       * with respect to the planet at its specified radius */
       pushMatrix();
       rotate(angle);
       translate(radius, 0);
       image(img, 0, 0);
       popMatrix();
       
-      noTint();
+      noTint(); // don't want to keep the color weird! 
 
-      // update angle
+      /* update angle based on the orbit speed */
       angle = (angle + orbitspeed) % TWO_PI;
+      
     }else if(leaving){
       /* LEAVING --> do not rotate but increase radius until it exits the screen */
       pushMatrix();
@@ -167,9 +172,11 @@ public class Asteroid{
       image(img, 0, 0);
       popMatrix();
       
-      noTint();
+      noTint(); // don't want to keep the color weird! 
       
-      // update the radius, not the angle
+      /* update the radius, not the angle because it leaves 
+       * in a linear direction. Orbit speed is used to change
+       * how fast the asteroid leaves orbit */ 
       initRadius += orbitspeed*100;
       if(initRadius >= width/2){
          dead = true;
@@ -182,9 +189,11 @@ public class Asteroid{
       image(img, 0, 0);
       popMatrix();
       
-      noTint();
+      noTint(); // don't want to keep the color weird! 
       
-      // update the radius, not the angle
+      /* update the radius, not the angle because it enters 
+       * in a linear direction. Orbit speed is used to change
+       * how fast the asteroid enters orbit */ 
       initRadius -= orbitspeed*100;
       if(initRadius <= radius){
         inOrbit = true;
