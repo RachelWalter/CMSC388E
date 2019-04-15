@@ -44,7 +44,7 @@ void setup() {
 
 void draw(){
   // Process new data if we have more data and had a waiting period
-  if(counter < rowCount && slowDown % 100 == 0){
+  if(counter < (rowCount-1) && slowDown % 100 == 0){
     TableRow row = table.getRow(counter);
     as.processRow(row);
     counter += 1;
@@ -65,4 +65,14 @@ void draw(){
   translate(50, 50);  // update origin again for the asteroids
   as.update(); // update all the asteroids!
   popMatrix(); // reset so we can start over
+  
+  if(counter >= (rowCount -1) && slowDown % 200 == 0){
+    restart();
+  }
+}
+
+void restart(){
+  counter = 0;
+  slowDown = 0; 
+  as = new AsteroidSystem();
 }

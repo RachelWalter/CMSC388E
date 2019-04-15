@@ -3,10 +3,10 @@ public class Asteroid{
   /* Here I'm defining circles of closeness */
   /* which will be used to create the rings of orbit */
   final int RING1 = 80; // romantic partners, family, and close friends
-  final int RING2 = 160; // friends
-  final int RING3 = 240; // classmates and coworkers
-  final int RING4 = 320; // family friends and acquantinces
-  final int RING5 = 400; // dislike
+  final int RING2 = 170; // friends
+  final int RING3 = 270; // classmates and coworkers
+  final int RING4 = 370; // family friends and acquantinces
+  final int RING5 = 480; // dislike
   
   /* RING1 COLORS */
   color famColor = color(124, 168, 255); //blue
@@ -54,7 +54,7 @@ public class Asteroid{
     // selecting a random asteroid image and resizing it
     int rand = (int)(random(0,8));
     img = images[rand].copy();
-    img.resize(20,20); 
+    //img.resize(20,20); 
     
     // initializing our movement states, all are false to start
     inOrbit = false;
@@ -67,38 +67,47 @@ public class Asteroid{
     state = s;
     if(state == State.FAMILY){
       radius = RING1 + random(-15,15);
+      img.resize(20,20); 
     }
     
     if(state == State.FRIEND){
       radius = RING2 + random(-15,15);
+      img.resize(17,17); 
     }
     
     if(state == State.CLASSMATE){
       radius = RING3 + random(-15,15);
+      img.resize(14,14); 
     }
     
     if(state == State.ACQ){
       radius = RING4 + random(-15,15);
+      img.resize(11,11); 
     }
     
     if(state == State.CLOSEFRIEND){
       radius = RING1 + random(-15,15);
+      img.resize(20,20); 
     }
     
     if(state == State.ROMANTIC){
       radius = RING1 + random(-15,15);
+      img.resize(20,20); 
     }
     
     if(state == State.COWORKER){
       radius = RING3 + random(-15,15);
+      img.resize(14,14); 
     }
     
     if(state == State.FAMFRIEND){
       radius = RING4 + random(-15,15);
+      img.resize(11,11); 
     }
     
     if(state == State.DISLIKE){
       radius = RING5 + random(-15,15);
+      img.resize(8,8); 
     }
     /* END SETTING THE RADIUS */
     
