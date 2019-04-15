@@ -18,6 +18,9 @@ float prevBrightness;
 
 ArrayList array;
 
+int Y_AXIS = 1;
+int X_AXIS = 2;
+
 void setup() {
   size(640, 480);
   video = new Capture(this, width, height);
@@ -27,6 +30,8 @@ void setup() {
   prevX = 0;
   prevY = 0;
   array = new ArrayList<Integer>();
+  array.add(255);
+  frameRate(20);
 }
 
 void captureEvent(Capture video) {
@@ -88,17 +93,16 @@ void draw() {
     
     float red = Math.abs(closestX - prevX);
     float green = Math.abs(closestY - prevY);
-    float blue = Math.abs(pixelBrightness - prevBrightness);
+    float blue = Math.abs(pixelBrightness - prevBrightness)*50;
     
     color movement = color(red, green, blue);
     array.add(0, movement);
-    if(array.size() >= height){
+    if(array.size() > (height/12)){
       array.remove(array.size() - 1);
     }
    
-    for(int i = 0; i < array.size(); i++){
-      stroke((color)(array.get(i)));
-      line(0, i, width, i);
+    for(int i = 0; i < array.size() - 1; i++){
+      setGradient(0, i*12, width, 12.0 , (int)(array.get(i)), (int)(array.get(i+1)), Y_AXIS);
     }
     
     prevX = closestX;
@@ -120,5 +124,27 @@ void mousePressed() {
 void keyPressed() {
   if(key == ENTER || key == RETURN){
     selected = false;
+  }
+}
+
+/* Taken from: https://processing.org/examples/lineargradient.html */
+void setGradient(int x, int y, float w, float h, color c1, color c2, int axis ) {
+  noFill();
+
+  if (axis == Y_AXIS) {  // Top to bottom gradient
+    for (int i = y; i <= y+h; i++) {
+      float inter = map(i, y, y+h, 0, 1);
+      color c = lerpColor(c1, c2, inter);
+      stroke(c);
+      line(x, i, x+w, i);
+    }
+  }  
+  else if (axis == X_AXIS) {  // Left to right gradient
+    for (int i = x; i <= x+w; i++) {
+      float inter = map(i, x, x+w, 0, 1);
+      color c = lerpColor(c1, c2, inter);
+      stroke(c);
+      line(i, y, i, y+h);
+    }
   }
 }
